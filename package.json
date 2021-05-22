@@ -1,0 +1,37 @@
+{
+  "name": "odevjunior-backend",
+  "version": "1.0.0",
+  "description": "Backend of odevjunior application.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "debug": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobertoAsgon/odevjunior-backend.git"
+  },
+  "keywords": [
+    "dti",
+    "petsearch"
+  ],
+  "author": "Roberto Assis Gonçalves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobertoAsgon/odevjunior-backend/issues"
+  },
+  "homepage": "https://github.com/RobertoAsgon/odevjunior-backend#readme",
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  }
+}
