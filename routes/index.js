@@ -5,10 +5,11 @@ const route = express.Router();
 
 route
   .get('/', (_req, res) => {
-    db.connect(function(err) {
+    db.query("SELECT * FROM users", function (err, result) {
       if (err) throw err;
-      res.send("Connected!");
-    })
+      console.log(result);
+      res.send(result)
+    });
   })
 
 module.exports = route;
