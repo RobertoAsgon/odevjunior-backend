@@ -18,4 +18,4 @@ app.use((err, _req, res, _next) => {
   res.status(err.output.statusCode).send(`${err.output.payload.message}`);
 });
 
-app.listen(PORT, console.log(`Aplicação rodando na porta ${PORT}.`));
+app.listen(process.env.PORT || PORT, console.log(`Aplicação rodando na porta ${PORT}.`));
