@@ -4,6 +4,7 @@ const db = require("./connection.js");
 const User = function(user) {
   this.email = user.email;
   this.name = user.name;
+  this.password = user.password;
   this.permission = user.permission;
 };
 
@@ -54,8 +55,8 @@ User.getAll = result => {
 
 User.updateById = (id, user, result) => {
   db.query(
-    "UPDATE users SET email = ?, name = ?, permission = ? WHERE id = ?",
-    [user.email, user.name, user.permission, id],
+    "UPDATE users SET email = ?, name = ?, password = ?, permission = ? WHERE id = ?",
+    [user.email, user.name, user.password, user.permission, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
