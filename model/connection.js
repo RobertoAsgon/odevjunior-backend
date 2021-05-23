@@ -1,12 +1,14 @@
 require('dotenv/config');
 const mysql = require("mysql");
 
-const db = mysql.createConnection({
+const config = {
   host:"us-cdbr-east-03.cleardb.com",
   user: "b09cb80e130998",
   password: "defc81a4",
   database: "heroku_7d6e59d42396b7f"
-});
+}
+
+const db = mysql.createConnection(config);
 
 db.connect(error => {
   if (error) throw error;
@@ -25,12 +27,7 @@ function handleDisconnect(conn) {
 
     console.log('Re-connecting lost connection: ' + err.stack);
 
-    connection = mysql.createConnection({
-      host:"us-cdbr-east-03.cleardb.com",
-      user: "b09cb80e130998",
-      password: "defc81a4",
-      database: "heroku_7d6e59d42396b7f"
-    });
+    connection = mysql.createConnection(config);
 
     handleDisconnect(connection);
     connection.connect();
