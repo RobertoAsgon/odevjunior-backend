@@ -18,4 +18,6 @@ app.use((err, _req, res, _next) => {
   res.status(err.output.statusCode).send(`${err.output.payload.message}`);
 });
 
+require("./routes/customer.routes.js")(app);
+
 app.listen(process.env.PORT || PORT, console.log(`Aplicação rodando na porta ${PORT}.`));
