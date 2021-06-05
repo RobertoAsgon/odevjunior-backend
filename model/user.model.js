@@ -5,7 +5,7 @@ const User = function(user) {
   this.email = user.email;
   this.name = user.name;
   this.password = user.password;
-  this.permission = user.permission;
+  this.permission = false;
 };
 
 User.create = (newUser, result) => {

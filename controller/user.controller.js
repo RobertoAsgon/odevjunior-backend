@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     email: req.body.email,
     name: req.body.name,
     password: req.body.password,
-    permission: req.body.permission
+    permission: false
   });
 
   // Save User in the database
