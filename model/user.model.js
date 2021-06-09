@@ -8,6 +8,33 @@ const User = function(user) {
   this.permission = false;
 };
 
+User.login = (user, result) => {
+  console.log('uisser', user)
+  db.query(`SELECT * FROM users WHERE email = '${user.email}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length && res[0].password === user.password) {
+      const user = res[0]
+      const { password, id, permission, ...foundUser } = user;
+
+      console.log("found user: ", foundUser);
+
+      result(null, foundUser);
+      return;
+    }
+
+    if (res.length === 0) {
+      return result({ kind: "not_found" }, null);
+    } 
+          
+    result({ kind: "wrong_password" }, null);
+  });
+};
+
 User.create = (newUser, result) => {
   db.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {

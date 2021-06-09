@@ -1,5 +1,33 @@
 const User = require("../model/user.model.js");
 
+// Login user
+exports.login = (req, res) => {
+  // Create a User Login Obj
+  const user = new User({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  User.login(user, (err, data) => {
+    if (err) {
+
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `User not found.`
+        });
+      } else if (err.kind === "wrong_password") {
+        res.status(404).send({
+          message: `Password is incorrect.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving User with id " + req.params.userId
+        });
+      }
+    } else res.send(data);
+  });
+};
+
 // Create and Save a new User
 exports.create = (req, res) => {
   // Validate request

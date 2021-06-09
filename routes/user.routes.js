@@ -4,6 +4,9 @@ module.exports = app => {
   app.get("/", (_req, res) => res.send('Ok!'));
 
   // Create a new User
+  app.post("/login", users.login);
+
+  // Create a new User
   app.post("/users", users.create);
 
   // Find all users
