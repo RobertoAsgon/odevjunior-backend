@@ -1,4 +1,5 @@
 const db = require("./connection.js");
+const jwt = require('jsonwebtoken');
 
 // constructor
 const User = function(user) {
@@ -8,8 +9,12 @@ const User = function(user) {
   this.permission = false;
 };
 
+const jwtConfig = {
+  expiresIn: '1d',
+  algorithm: 'HS256',
+};
+
 User.login = (user, result) => {
-  console.log('uisser', user)
   db.query(`SELECT * FROM users WHERE email = '${user.email}'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -22,8 +27,9 @@ User.login = (user, result) => {
       const { password, id, permission, ...foundUser } = user;
 
       console.log("found user: ", foundUser);
+      const token = jwt.sign(foundUser, 'odevjnr', jwtConfig);
 
-      result(null, foundUser);
+      result(null, {...foundUser, token});
       return;
     }
 

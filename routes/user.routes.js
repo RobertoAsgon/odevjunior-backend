@@ -1,16 +1,17 @@
 module.exports = app => {
   const users = require("../controller/user.controller.js");
+  const auth = require("../middleware/auth")
 
   app.get("/", (_req, res) => res.send('Ok!'));
 
-  // Create a new User
+  // Login user
   app.post("/login", users.login);
 
   // Create a new User
   app.post("/users", users.create);
 
   // Find all users
-  app.get("/users", users.findAll);
+  app.get("/users",  auth(true), users.findAll);
 
   // Find a single User with userId
   app.get("/users/:userId", users.findOne);
