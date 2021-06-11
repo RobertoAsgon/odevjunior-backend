@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const handleVerifyToken = (token, next) => {
+const tokenHandler = (token, next) => {
   try {
     const JWT_SECRET = 'odevjnr';
     return jwt.verify(token, JWT_SECRET);
@@ -9,12 +9,12 @@ const handleVerifyToken = (token, next) => {
   }
 };
 
-const jwtAuthorization = (required) => async (req, _res, next) => {
+const authMiddleware = (required) => async (req, _res, next) => {
   const { authorization } = req.headers;
   if (!required) return next();
   if (!authorization) return next({ status: 401, message: 'Usuário não logado' });
-  req.user = handleVerifyToken(authorization, next);
+  req.user = tokenHandler(authorization, next);
   return next();
 };
 
-module.exports = jwtAuthorization;
+module.exports = authMiddleware;

@@ -1,20 +1,29 @@
-require('dotenv/config');
-const express = require('express');
-const app = express();
-const boom = require('@hapi/boom');
-const PORT = 3001; 
 const cors = require('cors');
+const express = require('express');
 
-app.use(cors());
+const app = express();
+
+const {
+  registerController,
+  loginController,
+  updateNameController,
+} = require('./controllers/userController');
+const auth = require('./middlewares/authentication');
+const boomError = require('./middlewares/boomError');
 
 app.use(express.json());
+app.use(cors());
 
-require("./routes/user.routes.js")(app);
+// Rotas
+app.get('/', (_req, res) => res.send('API is online!'));
+app.post('/login', (req, res) => loginController(req, res));
+app.post('/register', (req, res) => registerController(req, res));
+app.post('/profile', auth(true), (req, res) => updateNameController(req, res));
 
-app.use((err, _req, res, _next) => {
-  if (!boom.isBoom(err)) return res.status(500).send(`${err.message}`);
+// Middleware de Erros
+app.use(boomError);
 
-  res.status(err.output.statusCode).send(`${err.output.payload.message}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log('Umbler listening on port %s', port);
 });
-
-app.listen(process.env.PORT || PORT, console.log(`Aplicação rodando na porta ${PORT}.`));
