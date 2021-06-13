@@ -1,64 +1,39 @@
 const { connection } = require('./connection');
 
-const getUserByEmail = async (userEmail) => (
-  connection()
-    .then((schema) => schema
-      .getTable('users')
-      .select(['id', 'name', 'email', 'password', 'role'])
-      .where('email = :email')
-      .bind('email', userEmail)
-      .execute())
-    .then((results) => results.fetchOne())
-    .then(([id, name, email, password, role]) => ({
-      id, name, email, password, role,
-    }))
-    .catch((err) => err)
-);
-
-const getUserById = async (userId) => (
-  connection()
-    .then((schema) => schema
-      .getTable('users')
-      .select(['id', 'name', 'email', 'password', 'role'])
-      .where('email = :email')
-      .bind('id', userId)
-      .execute())
-    .then((results) => results.fetchOne())
-    .then(([id, name, email, password, role]) => ({
-      id, name, email, password, role,
-    }))
-    .catch((err) => err)
-);
-
-const createUser = async (name, email, password, seller) => {
+const selectUserBy = async (param) => {
   try {
-    const role = seller ? 'administrator' : 'client';
     await connection()
-      .then((db) => db
+      .then((schema) => schema
         .getTable('users')
-        .insert(['name', 'email', 'password', 'role'])
-        .values(name, email, password, role)
-        .execute());
-    return { name, email, password, role };
-  } catch (err) {
-    return err;
+        .select(['id', 'name', 'email', 'password', 'role_access', 'created_date', 'ip_address'])
+        .where(`${param} = :${param}`)
+        .bind(`${param}`, param)
+        .execute())
+      .then((results) => results.fetchOne())
+      .then(([id, name, email, password, roleAccess, createdDate, ipAddress]) => ({
+        id, name, email, password, roleAccess, createdDate, ipAddress,
+      }));
+  } catch (error) {
+    return error;
   }
 };
 
-const updateName = async (userName, userEmail) => (
-  connection()
-    .then((schema) => schema
-      .getTable('users')
-      .update()
-      .set('name', userName)
-      .where('email = :email')
-      .bind('email', userEmail)
-      .execute())
-);
+const insertNewUser = async (param) => {
+  try {
+    const { name, email, password, role_acces, created_date, ip_address } = param;
+    await connection()
+      .then((db) => db
+        .getTable('users')
+        .insert(['name', 'email', 'password', 'role_acces', 'created_date', 'ip_address'])
+        .values(name, email, password, role_acces, created_date, ip_address)
+        .execute());
+    return { name, email, password, role_acces, created_date, ip_address };
+  } catch (error) {
+    return error;
+  }
+};
 
 module.exports = {
-  getUserByEmail,
-  getUserById,
-  createUser,
-  updateName,
+  selectUserBy,
+  insertNewUser,
 };

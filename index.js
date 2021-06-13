@@ -6,7 +6,6 @@ const app = express();
 const {
   registerController,
   loginController,
-  updateNameController,
 } = require('./controllers/userController');
 const auth = require('./middlewares/authentication');
 const boomError = require('./middlewares/boomError');
@@ -15,10 +14,9 @@ app.use(express.json());
 app.use(cors());
 
 // Rotas
-app.get('/', (_req, res) => res.send('API is online!'));
+app.get('/', (_req, res) => res.send(new Date()));
 app.post('/login', (req, res) => loginController(req, res));
 app.post('/register', (req, res) => registerController(req, res));
-app.post('/profile', auth(true), (req, res) => updateNameController(req, res));
 
 // Middleware de Erros
 app.use(boomError);
